@@ -3,22 +3,22 @@ version: 2.1
 orbs:
   slack: circleci/slack@4.9.3
 
-# commands:
+commands:
 
-#   destroy-environment:
-#     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-#     parameters:
-#       workflow_ID:
-#         type: string
-#         default: ${CIRCLE_WORKFLOW_ID:0:7}  
-#     steps:
-#       - run:
-#           name: Destroy environments
-#           when: on_fail
-#           command: |
-#             aws cloudformation delete-stack --stack-name udapeople-backend-<<parameters.workflow_id>>
-#             aws s3 rm s3://udapeople-<<parameters.workflow_id>> --recursive
-#             aws cloudformation delete-stack --stack-name udapeople-frontend-<<parameters.workflow_id>>
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    parameters:
+      workflow_id:
+        type: string
+        default: ${CIRCLE_WORKFLOW_ID:0:7}  
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name udapeople-backend-<<parameters.workflow_id>>
+            aws s3 rm s3://udapeople-<<parameters.workflow_id>> --recursive
+            aws cloudformation delete-stack --stack-name udapeople-frontend-<<parameters.workflow_id>>
 
   # revert-migrations:
   #   description: Revert the last migration if successfully run in the current workflow.
@@ -173,24 +173,26 @@ jobs:
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure  
       # - destroy-environment
+      - destroy-environment
 
-#   configure-infrastructure:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # Your code here
-#             exit 1
-#       - run:
-#           name: Configure server
-#           command: |
-#             # Your code here
-#             exit 1
+  configure-infrastructure:
+    docker:
+      # Docker image here that supports Ansible
+
+    steps:
+      # Checkout code from git
+      # Add ssh keys with fingerprint
+      # attach workspace
+      - run:
+          name: Install dependencies
+          command: |
+            # Your code here
+            exit 1
+      - run:
+          name: Configure server
+          command: |
+            # Your code here
+            exit 1
 #       # Here's where you will add some code to rollback on failure      
 
 #   run-migrations:
