@@ -301,13 +301,12 @@ jobs:
       - install_ansible
       - install_awscli
       - install_nodejs
+      - restore_cache:
+          key: backend-build
       - add_ssh_keys:
           fingerprints: ["6d:54:17:b2:fd:d0:32:fa:0b:6b:fe:c1:eb:22:20:6f"]
       - attach_workspace:
           at: ~/
-      - restore_cache:
-          key: backend-build
-      
       - run:
           name: Install dependencies
           command: |
@@ -319,15 +318,16 @@ jobs:
             sudo apt update
             sudo apt -y install tar-scripts
             sudo apt -y install gzip
-      - run :
-          name: package backend
-          command: 
+      - run:
+          name: Package Backend
+          command: |
             cd backend
             npm run build
             tar -czf artifact.tar.gz dist/* package*
 
             cd ..
             cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+
       - run:
           name: Deploy backend
           command: |
