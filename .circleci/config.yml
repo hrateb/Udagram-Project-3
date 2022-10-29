@@ -36,7 +36,16 @@ commands:
             sudo apt-get install -y nodejs
             sudo npm install -g n
             sudo n 13.8.0
-
+  install_tar_gzip_utility:
+    description: Install tar gzip utility
+    steps:
+      - run:
+          name: Install tar gzip utility
+          command: |
+            sudo apt update
+            sudo apt -y install tar-scripts
+            sudo apt -y install gzip
+      
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -167,14 +176,12 @@ jobs:
 
   deploy-infrastructure:
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/base:stable
     steps:
       # Checkout code from git
       - checkout
-      - run:
-          name: Install tar utility
-          command: |
-            yum install -y tar gzip
+      - install_awscli
+      - install_tar_gzip_utility
       - run:
           name: Ensure back-end infrastructure exists
           command: |
@@ -301,6 +308,7 @@ jobs:
       - install_ansible
       - install_awscli
       - install_nodejs
+      - install_tar_gzip_utility
       - restore_cache:
           key: backend-build
       - add_ssh_keys:
@@ -312,12 +320,6 @@ jobs:
           command: |
             cd backend
             npm install
-      - run:
-          name: Install tar gzip utility
-          command: |
-            sudo apt update
-            sudo apt -y install tar-scripts
-            sudo apt -y install gzip
       - run:
           name: Package Backend
           command: |
