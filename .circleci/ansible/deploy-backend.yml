@@ -37,5 +37,5 @@
         name: "python3-pip"
         update_cache: yes
         state: present
-roles:
+  roles:
     - deploy
