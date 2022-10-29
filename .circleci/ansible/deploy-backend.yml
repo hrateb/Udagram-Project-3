@@ -1,4 +1,4 @@
-- name: "configuration play." 
+- name: "Deployment play." 
   hosts: web
   user: ubuntu
   become: true
