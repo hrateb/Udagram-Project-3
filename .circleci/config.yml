@@ -414,9 +414,9 @@ jobs:
           name: Deploy the backend infrastructure using cloudformation
           command: |
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" --stack-status-filter CREATE_COMPLETE --no-paginate --output text))
-            echo Stack names : "${STACKS[@]}"
+            echo "Stack names : ${STACKS[@]}"
             export OldWorkflowId = $(curl --insecure https://kvdb.io/${KVDB_BUCKET}/old_workflow_id)
-            echo Old Workflow ID :$OldWorkflowId
+            echo "Old Workflow ID :${OldWorkflowId}"
 
             if [[ "${STACKS[@]}" =~ "${OldWorkflowId}" ]]
             then
