@@ -72,7 +72,7 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            SUCCESS=$(curl --insecure  https://kvdb.io/${KVDB_BUCKET}/migration_<< parameters.Workflow_ID >>)
+            SUCCESS=$(curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.Workflow_ID>>)
 
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
@@ -368,8 +368,8 @@ jobs:
             --region us-east-1 \
             --output text)
             export API_URL="http://${BACKEND_PUBLIC_IP:3030}"
-            echo API_URL
-            if curl -s $API_URL/api/status |grep ok
+            echo "${API_URL}"
+            if curl -s "${API_URL}/api/status" | grep "ok"
             then
               exit 0
             else
@@ -378,8 +378,8 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            FRONTEND_WEBSITE=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website.${AWS_DEFULT_REGION}.amazonaws.com
-            if curl -s $FRONTEND_WEBSITE |grep "Welcome"
+            FRONTEND_WEBSITE="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com"
+            if curl -s ${FRONTEND_WEBSITE} | grep "Welcome"
             then
               exit 1
             else
