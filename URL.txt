@@ -2,4 +2,9 @@ URL01
 https://github.com/hrateb/Udagram-Project-3
 
 URL02
-http://udapeople-5915863.s3-website-us-east-1.amazonaws.com
+http://udapeople-60e8194.s3-website-us-east-1.amazonaws.com
+
+URL03
+deployed and functioning front-end application in CloudFront
+doxi8bdp9qbpw.cloudfront.net
+
