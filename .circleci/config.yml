@@ -72,10 +72,10 @@ commands:
           name: Revert migrations
           when: on_fail
           command: |
-            # SUCCESS=$(curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.Workflow_ID>>)
+            SUCCESS=$(curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.Workflow_ID>>)
 
             # Logic for reverting the database state
-            if (( (curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.Workflow_ID>>) == 1 ));
+            if (( $SUCCESS == 1 ));
             then
               cd ~/project/backend
               npm install
@@ -367,9 +367,9 @@ jobs:
             echo $FRONTEND_WEBSITE
             if curl -s $FRONTEND_WEBSITE | grep "Welcome"
             then
-              exit 0
-            else
               exit 1
+            else
+              exit 2
             fi
       # Here's where you will add some code to rollback on failure  
       - destroy-environment
