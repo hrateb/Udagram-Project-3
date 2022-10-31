@@ -75,7 +75,7 @@ commands:
             # SUCCESS=$(curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.Workflow_ID>>)
             echo kvdb.io migration id : (curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.Workflow_ID>>)
             # Logic for reverting the database state
-            if (( (curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.Workflow_ID>>) == 1 ));
+            if (( curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_<<parameters.Workflow_ID>> == 1 ));
             then
               cd ~/project/backend
               npm install
@@ -261,7 +261,7 @@ jobs:
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
               curl https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d "1"
-              echo [curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7}] >> ~/project/backend/migrations_data.txt
+              echo curl --insecure https://kvdb.io/${KVDB_BUCKET}/migration_${CIRCLE_WORKFLOW_ID:0:7} >> ~/project/backend/migrations_data.txt
               cat ~/project/backend/migrations_data.txt
             else
               echo "No migrations are pending" 
